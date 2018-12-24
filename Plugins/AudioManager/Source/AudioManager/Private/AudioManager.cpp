@@ -27,13 +27,11 @@ UExtendedAudioComponent* UAudioManager::GetAudioComponent(int32 id) const
 
 void UAudioManager::SpawnAudioActor(UWorld* newWorld)
 {
-	UWorld* World = newWorld;
-
 	FActorSpawnParameters SpawnInfo;
-	if (World)
+	if (newWorld)
 	{
-		m_AudioActor = World->SpawnActor<AAudioActor>(FVector::ZeroVector, FRotator::ZeroRotator, SpawnInfo);
-		//AudioVolumeChanged(VolumeInSettings);
+		m_AudioActor = newWorld->SpawnActor<AAudioActor>(FVector::ZeroVector, FRotator::ZeroRotator, SpawnInfo);
+		AudioVolumeChanged(m_VolumeInSettings);
 	}
 }
 
@@ -79,8 +77,6 @@ void UAudioManager::SetVolume(float newVolume)
 {
 	m_AudioActor->SetVolume(newVolume);
 }
-
-
 
 
 
