@@ -58,6 +58,9 @@ private:
 	UPROPERTY(meta = (BindWidget), meta = (DisplayName = "Button Change Background"))
 	UButton* m_ButtonChangeBackground;
 
+	UPROPERTY(meta = (BindWidget), meta = (DisplayName = "Button Repeat"))
+	UButton* m_ButtonRepeat;
+
 
 	UFUNCTION()
 	void ButtonPlayClicked();
@@ -70,6 +73,9 @@ private:
 
 	UFUNCTION()
 	void ButtonChangeBackgroundClicked();
+
+	UFUNCTION()
+	void ButtonRepeatClicked();
 
 	UPROPERTY()
 	UAudioManager* m_AudioManager;

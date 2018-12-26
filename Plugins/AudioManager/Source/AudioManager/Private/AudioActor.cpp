@@ -29,7 +29,6 @@ int32 AAudioActor::PlaySound(USoundBase* soundBase, bool bLooping)
 {
 	int32 ComponentNumber = GetFreeComponentNumber();
 
-	UE_LOG(LogTemp, Warning, TEXT("ComponentNumber %i"), ComponentNumber)
 	m_ComponentsArray[ComponentNumber]->SetLoop(bLooping);
 	m_ComponentsArray[ComponentNumber]->SetSound(soundBase);
 	m_ComponentsArray[ComponentNumber]->Play();

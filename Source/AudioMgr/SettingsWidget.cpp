@@ -38,6 +38,11 @@ bool USettingsWidget::Initialize()
 		m_ButtonChangeBackground->OnReleased.AddDynamic(this, &USettingsWidget::ButtonChangeBackgroundClicked);
 	}
 
+	if (m_ButtonRepeat && !m_ButtonRepeat->OnReleased.IsBound())
+	{
+		m_ButtonRepeat->OnReleased.AddDynamic(this, &USettingsWidget::ButtonRepeatClicked);
+	}
+
 	if (m_SliderSound)
 	{
 		m_SliderSound->OnValueChanged.AddDynamic(this, &USettingsWidget::AudioVolumeChanged);
@@ -77,4 +82,9 @@ void USettingsWidget::ButtonChangeBackgroundClicked()
 {
 	m_AudioManager->Stop(m_record2);
 	m_record2 = m_AudioManager->PlaySound(m_SoundBase4, 1);
+}
+
+void USettingsWidget::ButtonRepeatClicked()
+{
+	m_AudioManager->Repeat(m_record1);
 }
