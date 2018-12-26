@@ -23,6 +23,10 @@ public:
 	//	returns AudioComponent's index in array
 	int32 PlaySound(USoundBase* soundBase, bool bLooping);
 
+	void Repeat(int32 id);
+
+	void Stop(int32 id);
+
 	UExtendedAudioComponent* GetAudioComponent(int32 id) const;
 
 	bool IsAudioMuted() const;
@@ -41,7 +45,7 @@ private:
 	UPROPERTY(meta = (DisplayName = "Audio Actor"))
 	AAudioActor* m_AudioActor;
 
-	void SpawnAudioActor(UWorld* newWorld);
+	void SpawnAudioActor();
 	
 	//	Volume
 	float m_VolumeInSettings;
@@ -51,7 +55,5 @@ private:
 	bool m_AudioMuted;
 
 	void SetVolume(float newVolume);
-
-
 
 };

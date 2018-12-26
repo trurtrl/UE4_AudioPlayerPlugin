@@ -12,26 +12,48 @@ UAudioManager::UAudioManager(const FObjectInitializer & ObjectInitializer)
 	, m_VolumeMin(0.001f)
 	, m_VolumeMax(1.0f)
 {
-	FCoreUObjectDelegates::PostLoadMapWithWorld.AddUObject(this, &UAudioManager::SpawnAudioActor);
+
 }
 
 int32 UAudioManager::PlaySound(USoundBase* soundBase, bool bLooping)
 {
+	if (!m_AudioActor)
+	{
+		SpawnAudioActor();
+	}
+	SetVolume(m_VolumeInSettings);
 	return m_AudioActor->PlaySound(soundBase, bLooping);
 }
 
 UExtendedAudioComponent* UAudioManager::GetAudioComponent(int32 id) const
 {
-	return m_AudioActor->GetAudioComponent(id);
+	if (m_AudioActor)
+	{
+		return m_AudioActor->GetAudioComponent(id);
+	}
+	return nullptr;
 }
 
-void UAudioManager::SpawnAudioActor(UWorld* newWorld)
+void UAudioManager::SpawnAudioActor()
 {
 	FActorSpawnParameters SpawnInfo;
-	if (newWorld)
+	m_AudioActor = GetWorld()->SpawnActor<AAudioActor>(FVector::ZeroVector, FRotator::ZeroRotator, SpawnInfo);
+	AudioVolumeChanged(m_VolumeInSettings);
+}
+
+void UAudioManager::Repeat(int32 index)
+{
+	if (m_AudioActor)
 	{
-		m_AudioActor = newWorld->SpawnActor<AAudioActor>(FVector::ZeroVector, FRotator::ZeroRotator, SpawnInfo);
-		AudioVolumeChanged(m_VolumeInSettings);
+		m_AudioActor->Repeat(index);
+	}
+}
+
+void UAudioManager::Stop(int32 index)
+{
+	if (m_AudioActor)
+	{
+		m_AudioActor->Stop(index);
 	}
 }
 
@@ -75,7 +97,10 @@ float UAudioManager::GetVolumeInSettings() const
 
 void UAudioManager::SetVolume(float newVolume)
 {
-	m_AudioActor->SetVolume(newVolume);
+	if (m_AudioActor)
+	{
+		m_AudioActor->SetVolume(newVolume);
+	}
 }
 
 

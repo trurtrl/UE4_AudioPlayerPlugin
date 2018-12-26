@@ -29,6 +29,7 @@ int32 AAudioActor::PlaySound(USoundBase* soundBase, bool bLooping)
 {
 	int32 ComponentNumber = GetFreeComponentNumber();
 
+	UE_LOG(LogTemp, Warning, TEXT("ComponentNumber %i"), ComponentNumber)
 	m_ComponentsArray[ComponentNumber]->SetLoop(bLooping);
 	m_ComponentsArray[ComponentNumber]->SetSound(soundBase);
 	m_ComponentsArray[ComponentNumber]->Play();
@@ -56,6 +57,7 @@ int32 AAudioActor::GetFreeComponentNumber()
 		if (ExtendedAudioComponent)
 		{
 			ExtendedAudioComponent->RegisterComponent();
+			ExtendedAudioComponent->AdjustVolume(0.f, m_CurrentVolume);
 
 			if (GetRootComponent())
 			{
@@ -87,9 +89,28 @@ UExtendedAudioComponent* AAudioActor::GetAudioComponent(int32 id) const
 
 void AAudioActor::SetVolume(float newVolume)
 {
+	m_CurrentVolume = newVolume;
+
 	for (UAudioComponent* AudioComponent : m_ComponentsArray)
 	{
 		//	0.f - Adjust volume immediately
 		AudioComponent->AdjustVolume(0.f, newVolume);
+	}
+}
+
+void AAudioActor::Repeat(int32 id)
+{
+	if (m_ComponentsArray.IsValidIndex(id))
+	{
+		m_ComponentsArray[id]->Stop();
+		m_ComponentsArray[id]->Play();
+	}
+}
+
+void AAudioActor::Stop(int32 id)
+{
+	if (m_ComponentsArray.IsValidIndex(id))
+	{
+		m_ComponentsArray[id]->Stop();
 	}
 }

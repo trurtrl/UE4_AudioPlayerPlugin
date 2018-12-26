@@ -7,6 +7,7 @@ UExtendedAudioComponent::UExtendedAudioComponent(const FObjectInitializer & Obje
 	: Super(ObjectInitializer)
 	, m_Loop(false)
 {
+	bWantsInitializeComponent = true;
 }
 
 void UExtendedAudioComponent::InitializeComponent()

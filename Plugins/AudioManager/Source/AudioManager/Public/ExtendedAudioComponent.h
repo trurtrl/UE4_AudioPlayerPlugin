@@ -24,8 +24,6 @@ public:
 
 	virtual void InitializeComponent();
 
-	void PlayInLoop();
-		
 	void SetLoop(bool bLoop);
 
 	UPROPERTY(BlueprintAssignable)
@@ -34,5 +32,7 @@ public:
 protected:
 
 	bool m_Loop;
-	
+
+	UFUNCTION()
+	void PlayInLoop();
 };

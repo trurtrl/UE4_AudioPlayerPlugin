@@ -22,6 +22,10 @@ public:
 	//	returns AudioComponent's index in array
 	int32 PlaySound(USoundBase* soundBase, bool bLooping);
 
+	void Repeat(int32 id);
+
+	void Stop(int32 id);
+
 	UExtendedAudioComponent* GetAudioComponent(int32 id) const;
 
 	void SetVolume(float newVolume);
@@ -34,6 +38,8 @@ protected:
 	TArray<UExtendedAudioComponent*> m_ComponentsArray;
 
 	int32 GetFreeComponentNumber();
+
+	float m_CurrentVolume;
 
 public:	
 	//// Called every frame

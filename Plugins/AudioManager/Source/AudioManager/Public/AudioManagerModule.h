@@ -7,7 +7,7 @@
 #include "AudioManager.h"
 
 
-class FAudioManagerModule : public IModuleInterface
+class IAudioManagerModule : public IModuleInterface
 {
 public:
 
@@ -15,10 +15,4 @@ public:
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
 
-	UAudioManager* GetAudioManager() const;
-
-private:
-
-	UPROPERTY(meta = (DisplayName = "Audio Manager"))
-	UAudioManager* m_AudioManager;
 };
