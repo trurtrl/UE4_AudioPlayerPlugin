@@ -36,3 +36,8 @@ void UExtendedAudioComponent::SetLoop(bool bLoop)
 {
 	m_Loop = bLoop;
 }
+
+bool UExtendedAudioComponent::IsInPause()
+{
+	return m_InPause;
+}

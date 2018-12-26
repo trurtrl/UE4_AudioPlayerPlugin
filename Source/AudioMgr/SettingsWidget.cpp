@@ -7,6 +7,7 @@ USettingsWidget::USettingsWidget(const FObjectInitializer & ObjectInitializer)
 	: Super(ObjectInitializer)
 	, m_record1(-1)
 	, m_record2(-1)
+	, m_VolumeLevel(0.5f)
 {
 
 }
@@ -43,14 +44,25 @@ bool USettingsWidget::Initialize()
 		m_ButtonRepeat->OnReleased.AddDynamic(this, &USettingsWidget::ButtonRepeatClicked);
 	}
 
+	if (m_ButtonFadeIn && !m_ButtonFadeIn->OnReleased.IsBound())
+	{
+		m_ButtonFadeIn->OnReleased.AddDynamic(this, &USettingsWidget::ButtonFadeInClicked);
+	}
+
+	if (m_ButtonFadeOut && !m_ButtonFadeOut->OnReleased.IsBound())
+	{
+		m_ButtonFadeOut->OnReleased.AddDynamic(this, &USettingsWidget::ButtonFadeOutClicked);
+	}
+
 	if (m_SliderSound)
 	{
 		m_SliderSound->OnValueChanged.AddDynamic(this, &USettingsWidget::AudioVolumeChanged);
+		m_SliderSound->SetValue(m_VolumeLevel);
 	}
 
 	m_AudioManager = NewObject<UAudioManager>(this, FName(TEXT("Audio Mgr")));
 
-	AudioVolumeChanged(0.2f);
+	AudioVolumeChanged(m_VolumeLevel);
 
 	return true;
 }
@@ -87,4 +99,14 @@ void USettingsWidget::ButtonChangeBackgroundClicked()
 void USettingsWidget::ButtonRepeatClicked()
 {
 	m_AudioManager->Repeat(m_record1);
+}
+
+void USettingsWidget::ButtonFadeInClicked()
+{
+	m_AudioManager->FadeIn(1.5f);
+}
+
+void USettingsWidget::ButtonFadeOutClicked()
+{
+	m_AudioManager->FadeOut(1.5f);
 }

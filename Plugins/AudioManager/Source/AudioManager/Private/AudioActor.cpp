@@ -75,13 +75,13 @@ int32 AAudioActor::GetFreeComponentNumber()
 	return Num;
 }
 
-UExtendedAudioComponent* AAudioActor::GetAudioComponent(int32 id) const
+UExtendedAudioComponent* AAudioActor::GetAudioComponent(int32 recordID) const
 {
 	UExtendedAudioComponent* AudioComponent = nullptr;
 
-	if (m_ComponentsArray.IsValidIndex(id))
+	if (m_ComponentsArray.IsValidIndex(recordID))
 	{
-		AudioComponent = m_ComponentsArray[id];
+		AudioComponent = m_ComponentsArray[recordID];
 	}
 	return AudioComponent;
 }
@@ -97,19 +97,43 @@ void AAudioActor::SetVolume(float newVolume)
 	}
 }
 
-void AAudioActor::Repeat(int32 id)
+void AAudioActor::Repeat(int32 recordID)
 {
-	if (m_ComponentsArray.IsValidIndex(id))
+	if (m_ComponentsArray.IsValidIndex(recordID))
 	{
-		m_ComponentsArray[id]->Stop();
-		m_ComponentsArray[id]->Play();
+		m_ComponentsArray[recordID]->Stop();
+		m_ComponentsArray[recordID]->Play();
 	}
 }
 
-void AAudioActor::Stop(int32 id)
+void AAudioActor::Stop(int32 recordID)
 {
-	if (m_ComponentsArray.IsValidIndex(id))
+	if (m_ComponentsArray.IsValidIndex(recordID))
 	{
-		m_ComponentsArray[id]->Stop();
+		m_ComponentsArray[recordID]->Stop();
+	}
+}
+
+void AAudioActor::Pause(int32 recordID)
+{
+	if (m_ComponentsArray.IsValidIndex(recordID))
+	{
+		m_ComponentsArray[recordID]->SetPaused(!m_ComponentsArray[recordID]->IsInPause());
+	}
+}
+
+void AAudioActor::FadeIn(float FadeDuration, float FadeVolumeLevel)
+{
+	for (UAudioComponent* AudioComponent : m_ComponentsArray)
+	{
+		AudioComponent->FadeIn(FadeDuration, FadeVolumeLevel);
+	}
+}
+
+void AAudioActor::FadeOut(float FadeDuration, float FadeVolumeLevel)
+{
+	for (UAudioComponent* AudioComponent : m_ComponentsArray)
+	{
+		AudioComponent->FadeOut(FadeDuration, FadeVolumeLevel);
 	}
 }

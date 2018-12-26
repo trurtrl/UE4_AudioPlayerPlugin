@@ -61,6 +61,12 @@ private:
 	UPROPERTY(meta = (BindWidget), meta = (DisplayName = "Button Repeat"))
 	UButton* m_ButtonRepeat;
 
+	UPROPERTY(meta = (BindWidget), meta = (DisplayName = "Button Repeat"))
+	UButton* m_ButtonFadeIn;
+
+	UPROPERTY(meta = (BindWidget), meta = (DisplayName = "Button Repeat"))
+	UButton* m_ButtonFadeOut;
+
 
 	UFUNCTION()
 	void ButtonPlayClicked();
@@ -77,10 +83,19 @@ private:
 	UFUNCTION()
 	void ButtonRepeatClicked();
 
+	UFUNCTION()
+	void ButtonFadeInClicked();
+
+	UFUNCTION()
+	void ButtonFadeOutClicked();
+
+
 	UPROPERTY()
 	UAudioManager* m_AudioManager;
 
 	int32 m_record1;
 	int32 m_record2;
+
+	float m_VolumeLevel;
 
 };

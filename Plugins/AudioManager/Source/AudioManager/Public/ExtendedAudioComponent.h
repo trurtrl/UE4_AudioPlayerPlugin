@@ -26,12 +26,16 @@ public:
 
 	void SetLoop(bool bLoop);
 
+	bool IsInPause();
+
 	UPROPERTY(BlueprintAssignable)
 	FOnExtendedAudioFinished OnExtendedAudioFinished;
 
 protected:
 
 	bool m_Loop;
+
+	bool m_InPause;
 
 	UFUNCTION()
 	void PlayInLoop();
