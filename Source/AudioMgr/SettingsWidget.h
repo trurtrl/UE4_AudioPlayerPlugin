@@ -7,7 +7,7 @@
 #include "Runtime/UMG/Public/Components/Slider.h"
 #include "Runtime/UMG/Public/Components/Button.h"
 #include "Runtime/Engine/Classes/Sound/SoundBase.h"
-#include "AudioManager/Public/AudioManager.h"
+#include "AudioPlayer/Public/AudioPlayer.h"
 #include "SettingsWidget.generated.h"
 
 /**
@@ -41,7 +41,7 @@ public:
 	USoundBase* m_SoundBase4;
 
 	UFUNCTION(BlueprintCallable, Category = "Audio")
-	UAudioManager* GetAudioManager() const;
+	UAudioPlayer* GetAudioManager() const;
 
 private:
 
@@ -93,7 +93,7 @@ private:
 
 
 	UPROPERTY()
-	UAudioManager* m_AudioManager;
+	UAudioPlayer* m_AudioManager;
 
 	int32 m_record1;
 	int32 m_record2;

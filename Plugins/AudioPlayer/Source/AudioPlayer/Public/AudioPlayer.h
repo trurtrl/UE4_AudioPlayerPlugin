@@ -7,19 +7,19 @@
 #include "AudioActor.h"
 #include "ExtendedAudioComponent.h"
 #include "Runtime/Engine/Public/TimerManager.h"
-#include "AudioManager.generated.h"
+#include "AudioPlayer.generated.h"
 
 /**
  * 
  */
 UCLASS()
-class AUDIOMANAGER_API UAudioManager : public UObject
+class AUDIOPLAYER_API UAudioPlayer : public UObject
 {
 	GENERATED_BODY()
 	
 public:
 
-	UAudioManager(const FObjectInitializer & ObjectInitializer);
+	UAudioPlayer(const FObjectInitializer & ObjectInitializer);
 
 	//	returns AudioComponent's index in array
 	UFUNCTION(BlueprintCallable, Category = "Audio|Components|Audio")

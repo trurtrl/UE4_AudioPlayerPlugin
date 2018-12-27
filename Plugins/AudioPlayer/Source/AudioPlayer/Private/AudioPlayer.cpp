@@ -1,12 +1,12 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
-#include "AudioManager.h"
+#include "AudioPlayer.h"
 #include "Runtime/CoreUObject/Public/UObject/UObjectGlobals.h"
 //#include "Engine/Engine.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 
 
-UAudioManager::UAudioManager(const FObjectInitializer & ObjectInitializer)
+UAudioPlayer::UAudioPlayer(const FObjectInitializer & ObjectInitializer)
 	: Super(ObjectInitializer)
 	, m_VolumeInSettings(1.f)
 	, m_VolumeMin(0.001f)
@@ -19,7 +19,7 @@ UAudioManager::UAudioManager(const FObjectInitializer & ObjectInitializer)
 
 }
 
-int32 UAudioManager::PlaySound(USoundBase* soundBase, bool bLooping)
+int32 UAudioPlayer::PlaySound(USoundBase* soundBase, bool bLooping)
 {
 	if (!m_AudioActor)
 	{
@@ -29,7 +29,7 @@ int32 UAudioManager::PlaySound(USoundBase* soundBase, bool bLooping)
 	SetVolume(m_VolumeInSettings);
 }
 
-UExtendedAudioComponent* UAudioManager::GetAudioComponent(int32 recordID) const
+UExtendedAudioComponent* UAudioPlayer::GetAudioComponent(int32 recordID) const
 {
 	if (m_AudioActor)
 	{
@@ -38,14 +38,14 @@ UExtendedAudioComponent* UAudioManager::GetAudioComponent(int32 recordID) const
 	return nullptr;
 }
 
-void UAudioManager::SpawnAudioActor()
+void UAudioPlayer::SpawnAudioActor()
 {
 	FActorSpawnParameters SpawnInfo;
 	m_AudioActor = GetWorld()->SpawnActor<AAudioActor>(FVector::ZeroVector, FRotator::ZeroRotator, SpawnInfo);
 	AudioVolumeChanged(m_VolumeInSettings);
 }
 
-void UAudioManager::Repeat(int32 recordID)
+void UAudioPlayer::Repeat(int32 recordID)
 {
 	if (m_AudioActor)
 	{
@@ -53,7 +53,7 @@ void UAudioManager::Repeat(int32 recordID)
 	}
 }
 
-void UAudioManager::Stop(int32 recordID)
+void UAudioPlayer::Stop(int32 recordID)
 {
 	if (m_AudioActor)
 	{
@@ -61,7 +61,7 @@ void UAudioManager::Stop(int32 recordID)
 	}
 }
 
-void UAudioManager::Pause(int32 recordID)
+void UAudioPlayer::Pause(int32 recordID)
 {
 	if (m_AudioActor)
 	{
@@ -74,19 +74,19 @@ void UAudioManager::Pause(int32 recordID)
  *		Volume
  */
 
-bool UAudioManager::IsAudioMuted() const
+bool UAudioPlayer::IsAudioMuted() const
 {
 	return m_AudioMuted;
 }
 
-void UAudioManager::AudioMutedChanged(bool bMuted)
+void UAudioPlayer::AudioMutedChanged(bool bMuted)
 {
 	m_AudioMuted = bMuted;
 	float NewVolume = m_AudioMuted ? m_VolumeMin : m_VolumeInSettings;
 	SetVolume(NewVolume);
 }
 
-void UAudioManager::AudioVolumeChanged(float newVolume)
+void UAudioPlayer::AudioVolumeChanged(float newVolume)
 {
 	if (m_AudioMuted)
 	{
@@ -96,12 +96,12 @@ void UAudioManager::AudioVolumeChanged(float newVolume)
 	SetVolume(newVolume);
 }
 
-float UAudioManager::GetVolumeInSettings() const
+float UAudioPlayer::GetVolumeInSettings() const
 {
 	return m_VolumeInSettings;
 }
 
-void UAudioManager::SetVolume(float newVolume)
+void UAudioPlayer::SetVolume(float newVolume)
 {
 	if (m_AudioActor)
 	{
@@ -113,17 +113,17 @@ void UAudioManager::SetVolume(float newVolume)
  *		Fade In\Out
  */
 
-void UAudioManager::FadeIn(float FadeInDuration)
+void UAudioPlayer::FadeIn(float FadeInDuration)
 {
 	FadeExec(true, FadeInDuration);
 }
 
-void UAudioManager::FadeOut(float FadeOutDuration)
+void UAudioPlayer::FadeOut(float FadeOutDuration)
 {
 	FadeExec(false, FadeOutDuration);
 }
 
-void UAudioManager::FadeExec(bool bFadeIn, float FadeDuration)
+void UAudioPlayer::FadeExec(bool bFadeIn, float FadeDuration)
 {
 	m_FadeIn = bFadeIn;
 
@@ -133,11 +133,11 @@ void UAudioManager::FadeExec(bool bFadeIn, float FadeDuration)
 	if (m_AudioActor)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(m_FadeTimerHandle);
-		GetWorld()->GetTimerManager().SetTimer(m_FadeTimerHandle, this, &UAudioManager::FadeVolume, m_FadeDeltaTime, true, 0.f);
+		GetWorld()->GetTimerManager().SetTimer(m_FadeTimerHandle, this, &UAudioPlayer::FadeVolume, m_FadeDeltaTime, true, 0.f);
 	}
 }
 
-void UAudioManager::FadeVolume()
+void UAudioPlayer::FadeVolume()
 {
 	if (m_FadeTimeElapsed < m_FadeDuration || FMath::IsNearlyEqual(m_FadeTimeElapsed, m_FadeDuration, 0.05f))
 	{
@@ -152,7 +152,7 @@ void UAudioManager::FadeVolume()
 	}
 }
 
-void UAudioManager::SetVolumeMultiplier(float newMuptiplier)
+void UAudioPlayer::SetVolumeMultiplier(float newMuptiplier)
 {
 	if (m_AudioActor)
 	{

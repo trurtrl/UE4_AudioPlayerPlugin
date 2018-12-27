@@ -4,10 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
-#include "AudioManager.h"
 
 
-class IAudioManagerModule : public IModuleInterface
+class IAudioPlayerModule : public IModuleInterface
 {
 public:
 
