@@ -40,6 +40,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, meta = (DisplayName = "SoundBase 4"))
 	USoundBase* m_SoundBase4;
 
+	UFUNCTION(BlueprintCallable, Category = "Audio")
+	UAudioManager* GetAudioManager() const;
 
 private:
 

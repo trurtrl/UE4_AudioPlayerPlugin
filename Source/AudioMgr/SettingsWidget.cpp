@@ -110,3 +110,8 @@ void USettingsWidget::ButtonFadeOutClicked()
 {
 	m_AudioManager->FadeOut(1.5f);
 }
+
+UAudioManager* USettingsWidget::GetAudioManager() const
+{
+	return m_AudioManager;
+}

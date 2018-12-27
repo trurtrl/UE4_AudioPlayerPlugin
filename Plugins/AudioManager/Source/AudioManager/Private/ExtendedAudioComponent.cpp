@@ -30,8 +30,6 @@ void UExtendedAudioComponent::PlayInLoop()
 	if (m_Loop)
 	{
 		Play();
-		//AdjustVolume(0.f, m_CurrentVolume);
-		UE_LOG(LogTemp, Warning, TEXT("CurrentVolume = %f"), m_CurrentVolume)
 	}
 	else
 	{
@@ -57,4 +55,10 @@ void UExtendedAudioComponent::SetVolume(float newVolume)
 	m_CurrentVolume = newVolume;
 	//	0.f - Adjust volume immediately
 	AdjustVolume(0.f, newVolume);
+}
+
+void UExtendedAudioComponent::Pause()
+{
+	m_InPause = !m_InPause;
+	SetPaused(m_InPause);
 }

@@ -14,7 +14,6 @@ UAudioManager::UAudioManager(const FObjectInitializer & ObjectInitializer)
 	, m_FadeDuration(0.f)
 	, m_FadeDeltaTime(0.1f)
 	, m_FadeTimeElapsed(0.f)
-	, m_InFading(false)
 	, m_FadeIn(false)
 {
 
@@ -91,13 +90,7 @@ void UAudioManager::AudioVolumeChanged(float newVolume)
 {
 	if (m_AudioMuted)
 	{
-		SetVolume(0.001f);
-		return;
-	}
-
-	if (!m_InFading)
-	{
-		m_VolumeInSettings = newVolume;
+		newVolume = 0.001f;
 	}
 
 	SetVolume(newVolume);
@@ -122,23 +115,19 @@ void UAudioManager::SetVolume(float newVolume)
 
 void UAudioManager::FadeIn(float FadeInDuration)
 {
-	m_FadeIn = true;
-	m_InFading = true;
-	m_FadeDuration = FadeInDuration;
-	m_FadeTimeElapsed = 0;
-
-	if (m_AudioActor)
-	{
-		GetWorld()->GetTimerManager().ClearTimer(m_FadeTimerHandle);
-		GetWorld()->GetTimerManager().SetTimer(m_FadeTimerHandle, this, &UAudioManager::FadeVolume, m_FadeDeltaTime, true, 0.f);
-	}
+	FadeExec(true, FadeInDuration);
 }
 
 void UAudioManager::FadeOut(float FadeOutDuration)
 {
-	m_FadeIn = false;
-	m_InFading = true;
-	m_FadeDuration = FadeOutDuration;
+	FadeExec(false, FadeOutDuration);
+}
+
+void UAudioManager::FadeExec(bool bFadeIn, float FadeDuration)
+{
+	m_FadeIn = bFadeIn;
+
+	m_FadeDuration = FadeDuration;
 	m_FadeTimeElapsed = 0;
 
 	if (m_AudioActor)
@@ -154,14 +143,19 @@ void UAudioManager::FadeVolume()
 	{
 		float FadeDelta = m_FadeIn ? m_FadeTimeElapsed : (m_FadeDuration - m_FadeTimeElapsed);
 		float NewVolume = m_VolumeInSettings * (FadeDelta / m_FadeDuration);
-		AudioVolumeChanged(NewVolume);
+		SetVolumeMultiplier(NewVolume);
 		m_FadeTimeElapsed += m_FadeDeltaTime;
-		UE_LOG(LogTemp, Warning, TEXT("Volume = %f"), NewVolume)
 	}
 	else
 	{
 		GetWorld()->GetTimerManager().ClearTimer(m_FadeTimerHandle);
-		m_InFading = false;
-		UE_LOG(LogTemp, Warning, TEXT("STOP fading"))
+	}
+}
+
+void UAudioManager::SetVolumeMultiplier(float newMuptiplier)
+{
+	if (m_AudioActor)
+	{
+		m_AudioActor->SetVolumeMultiplier(newMuptiplier);
 	}
 }

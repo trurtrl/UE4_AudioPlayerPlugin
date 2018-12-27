@@ -96,13 +96,20 @@ void AAudioActor::SetVolume(float newVolume)
 	}
 }
 
+void AAudioActor::SetVolumeMultiplier(float newMultiplier)
+{
+	for (UExtendedAudioComponent* AudioComponent : m_ComponentsArray)
+	{
+		AudioComponent->SetVolumeMultiplier(newMultiplier);
+	}
+}
+
 void AAudioActor::Repeat(int32 recordID)
 {
 	if (m_ComponentsArray.IsValidIndex(recordID))
 	{
 		m_ComponentsArray[recordID]->Stop();
 		m_ComponentsArray[recordID]->Play();
-		//m_ComponentsArray[recordID]->SetVolume(m_CurrentVolume);
 	}
 }
 
@@ -118,6 +125,6 @@ void AAudioActor::Pause(int32 recordID)
 {
 	if (m_ComponentsArray.IsValidIndex(recordID))
 	{
-		m_ComponentsArray[recordID]->SetPaused(!m_ComponentsArray[recordID]->IsInPause());
+		m_ComponentsArray[recordID]->Pause();
 	}
 }

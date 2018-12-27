@@ -22,28 +22,41 @@ public:
 	UAudioManager(const FObjectInitializer & ObjectInitializer);
 
 	//	returns AudioComponent's index in array
+	UFUNCTION(BlueprintCallable, Category = "Audio|Components|Audio")
 	int32 PlaySound(USoundBase* soundBase, bool bLooping);
 
+	UFUNCTION(BlueprintCallable, Category = "Audio|Components|Audio")
 	void Repeat(int32 recordID);
 
+	UFUNCTION(BlueprintCallable, Category = "Audio|Components|Audio")
 	void Stop(int32 recordID);
 
+	UFUNCTION(BlueprintCallable, Category = "Audio|Components|Audio")
 	void Pause(int32 recordID);
 
+	UFUNCTION(BlueprintCallable, Category = "Audio|Components|Audio")
 	void FadeIn(float FadeInDuration);
+
+	UFUNCTION(BlueprintCallable, Category = "Audio|Components|Audio")
 	void FadeOut(float FadeOutDuration);
 
+	UFUNCTION(BlueprintCallable, Category = "Audio|Components|Audio")
 	UExtendedAudioComponent* GetAudioComponent(int32 recordID) const;
 
+	UFUNCTION(BlueprintCallable, Category = "Audio|Components|Audio")
 	bool IsAudioMuted() const;
 
+	UFUNCTION(BlueprintCallable, Category = "Audio|Components|Audio")
 	float GetVolumeInSettings() const;
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "Audio|Components|Audio")
 	void AudioVolumeChanged(float NewVolume);
 
-	UFUNCTION()
+	UFUNCTION(BlueprintCallable, Category = "Audio|Components|Audio")
 	void AudioMutedChanged(bool bMuted);
+
+	UFUNCTION(BlueprintCallable, Category = "Audio|Components|Audio")
+	void SetVolumeMultiplier(float newMuptiplier);
 
 
 private:
@@ -69,12 +82,10 @@ private:
 	float m_FadeDeltaTime;
 	float m_FadeTimeElapsed;
 
-	//	uses to separate volume settings either process in Fade In\Out or just volume's been changed statically 
-	bool m_InFading;
 	//	defines process Fade In or Out
 	bool m_FadeIn;
 
+	void FadeExec(bool bFadeIn, float FadeDuration);
 	void FadeVolume();
-
 
 };

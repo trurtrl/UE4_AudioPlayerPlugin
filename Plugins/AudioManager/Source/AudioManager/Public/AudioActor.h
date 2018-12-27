@@ -28,8 +28,7 @@ public:
 
 	void Pause(int32 id);
 
-	void PlayAll();
-	void StopAll();
+	void SetVolumeMultiplier(float newMultiplier);
 
 	UExtendedAudioComponent* GetAudioComponent(int32 id) const;
 

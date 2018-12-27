@@ -36,6 +36,9 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Audio|Components|Audio")
 	void SetVolume(float newVolume);
 
+	UFUNCTION(BlueprintCallable, Category = "Audio|Components|Audio")
+	void Pause();
+
 	UPROPERTY(BlueprintAssignable)
 	FOnExtendedAudioFinished OnExtendedAudioFinished;
 
