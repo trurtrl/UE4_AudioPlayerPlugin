@@ -28,8 +28,8 @@ public:
 
 	void Pause(int32 id);
 
-	void FadeIn(float FadeDuration, float FadeVolumeLevel);
-	void FadeOut(float FadeDuration, float FadeVolumeLevel);
+	void PlayAll();
+	void StopAll();
 
 	UExtendedAudioComponent* GetAudioComponent(int32 id) const;
 

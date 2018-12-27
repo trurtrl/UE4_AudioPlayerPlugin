@@ -22,11 +22,19 @@ public:
 
 	UExtendedAudioComponent(const FObjectInitializer & ObjectInitializer);
 
-	virtual void InitializeComponent();
+	virtual void InitializeComponent() override;
 
+	//UFUNCTION(BlueprintCallable, Category = "Audio|Components|Audio")
+	virtual void Play(float StartTime = 0.f) override;
+
+	UFUNCTION(BlueprintCallable, Category = "Audio|Components|Audio")
 	void SetLoop(bool bLoop);
 
+	UFUNCTION(BlueprintCallable, Category = "Audio|Components|Audio")
 	bool IsInPause();
+
+	UFUNCTION(BlueprintCallable, Category = "Audio|Components|Audio")
+	void SetVolume(float newVolume);
 
 	UPROPERTY(BlueprintAssignable)
 	FOnExtendedAudioFinished OnExtendedAudioFinished;
@@ -39,4 +47,6 @@ protected:
 
 	UFUNCTION()
 	void PlayInLoop();
+
+	float m_CurrentVolume;
 };

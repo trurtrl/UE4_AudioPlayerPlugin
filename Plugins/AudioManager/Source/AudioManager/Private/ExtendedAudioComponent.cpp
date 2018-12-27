@@ -3,9 +3,11 @@
 #include "ExtendedAudioComponent.h"
 
 
+
 UExtendedAudioComponent::UExtendedAudioComponent(const FObjectInitializer & ObjectInitializer)
 	: Super(ObjectInitializer)
 	, m_Loop(false)
+	, m_CurrentVolume(0.f)
 {
 	bWantsInitializeComponent = true;
 }
@@ -17,11 +19,19 @@ void UExtendedAudioComponent::InitializeComponent()
 	OnAudioFinished.AddDynamic(this, &UExtendedAudioComponent::PlayInLoop);
 }
 
+void UExtendedAudioComponent::Play(float StartTime)
+{
+	Super::Play(StartTime);
+	AdjustVolume(0.f, m_CurrentVolume);
+}
+
 void UExtendedAudioComponent::PlayInLoop()
 {
 	if (m_Loop)
 	{
 		Play();
+		//AdjustVolume(0.f, m_CurrentVolume);
+		UE_LOG(LogTemp, Warning, TEXT("CurrentVolume = %f"), m_CurrentVolume)
 	}
 	else
 	{
@@ -40,4 +50,11 @@ void UExtendedAudioComponent::SetLoop(bool bLoop)
 bool UExtendedAudioComponent::IsInPause()
 {
 	return m_InPause;
+}
+
+void UExtendedAudioComponent::SetVolume(float newVolume)
+{
+	m_CurrentVolume = newVolume;
+	//	0.f - Adjust volume immediately
+	AdjustVolume(0.f, newVolume);
 }

@@ -56,7 +56,7 @@ int32 AAudioActor::GetFreeComponentNumber()
 		if (ExtendedAudioComponent)
 		{
 			ExtendedAudioComponent->RegisterComponent();
-			ExtendedAudioComponent->AdjustVolume(0.f, m_CurrentVolume);
+			ExtendedAudioComponent->SetVolume(m_CurrentVolume);
 
 			if (GetRootComponent())
 			{
@@ -90,10 +90,9 @@ void AAudioActor::SetVolume(float newVolume)
 {
 	m_CurrentVolume = newVolume;
 
-	for (UAudioComponent* AudioComponent : m_ComponentsArray)
+	for (UExtendedAudioComponent* AudioComponent : m_ComponentsArray)
 	{
-		//	0.f - Adjust volume immediately
-		AudioComponent->AdjustVolume(0.f, newVolume);
+		AudioComponent->SetVolume(newVolume);
 	}
 }
 
@@ -103,6 +102,7 @@ void AAudioActor::Repeat(int32 recordID)
 	{
 		m_ComponentsArray[recordID]->Stop();
 		m_ComponentsArray[recordID]->Play();
+		//m_ComponentsArray[recordID]->SetVolume(m_CurrentVolume);
 	}
 }
 
@@ -119,21 +119,5 @@ void AAudioActor::Pause(int32 recordID)
 	if (m_ComponentsArray.IsValidIndex(recordID))
 	{
 		m_ComponentsArray[recordID]->SetPaused(!m_ComponentsArray[recordID]->IsInPause());
-	}
-}
-
-void AAudioActor::FadeIn(float FadeDuration, float FadeVolumeLevel)
-{
-	for (UAudioComponent* AudioComponent : m_ComponentsArray)
-	{
-		AudioComponent->FadeIn(FadeDuration, FadeVolumeLevel);
-	}
-}
-
-void AAudioActor::FadeOut(float FadeDuration, float FadeVolumeLevel)
-{
-	for (UAudioComponent* AudioComponent : m_ComponentsArray)
-	{
-		AudioComponent->FadeOut(FadeDuration, FadeVolumeLevel);
 	}
 }
