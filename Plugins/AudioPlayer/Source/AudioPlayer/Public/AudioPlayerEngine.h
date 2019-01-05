@@ -12,7 +12,7 @@
 /**
  * 
  */
-UCLASS()
+UCLASS(BlueprintType)
 class AUDIOPLAYER_API UAudioPlayerEngine : public UObject
 {
 	GENERATED_BODY()
@@ -77,6 +77,8 @@ private:
 	float m_FadeDuration;
 	float m_FadeDeltaTime;
 	float m_FadeTimeElapsed;
+	float m_FadeExecutionDelay;
+	float m_ErrorTolerance;
 
 	//	defines process Fade In or Out
 	bool m_FadeIn;

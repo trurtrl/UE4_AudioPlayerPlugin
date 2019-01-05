@@ -128,3 +128,15 @@ void AAudioActor::Pause(int32 recordID)
 		m_ComponentsArray[recordID]->Pause();
 	}
 }
+
+void AAudioActor::DeleteComponent(UExtendedAudioComponent* AudioComponent)
+{
+	int32 indexInArray;
+
+	if (m_ComponentsArray.Find(AudioComponent, indexInArray))
+	{
+		m_ComponentsArray.RemoveAt(indexInArray);
+		AudioComponent->UnregisterComponent();
+		AudioComponent->DestroyComponent();
+	}
+}

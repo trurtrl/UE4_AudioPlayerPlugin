@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/AudioComponent.h"
+#include "Runtime/Engine/Public/TimerManager.h"
 #include "ExtendedAudioComponent.generated.h"
 
 
@@ -52,4 +53,13 @@ protected:
 	void PlayInLoop();
 
 	float m_CurrentVolume;
+
+	FTimerHandle m_TimerHandle;
+
+	//	delay between finishing playing a sound and destroy this component automatically
+	float m_AutoDestroyDelay;
+
+	float m_AdjustVolumeDelay;
+
+	void DestroyItself();
 };

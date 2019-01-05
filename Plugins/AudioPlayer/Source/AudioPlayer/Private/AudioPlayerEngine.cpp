@@ -14,6 +14,8 @@ UAudioPlayerEngine::UAudioPlayerEngine(const FObjectInitializer & ObjectInitiali
 	, m_FadeDuration(0.f)
 	, m_FadeDeltaTime(0.1f)
 	, m_FadeTimeElapsed(0.f)
+	, m_FadeExecutionDelay(0.f)
+	, m_ErrorTolerance(0.05f)
 	, m_FadeIn(false)
 {
 
@@ -90,7 +92,7 @@ void UAudioPlayerEngine::AudioVolumeChanged(float newVolume)
 {
 	if (m_AudioMuted)
 	{
-		newVolume = 0.001f;
+		newVolume = m_VolumeMin;
 	}
 
 	SetVolume(newVolume);
@@ -123,13 +125,13 @@ void UAudioPlayerEngine::FadeIn(bool bFadeIn, float FadeDuration)
 	if (m_AudioActor)
 	{
 		GetWorld()->GetTimerManager().ClearTimer(m_FadeTimerHandle);
-		GetWorld()->GetTimerManager().SetTimer(m_FadeTimerHandle, this, &UAudioPlayerEngine::FadeVolume, m_FadeDeltaTime, true, 0.f);
+		GetWorld()->GetTimerManager().SetTimer(m_FadeTimerHandle, this, &UAudioPlayerEngine::FadeVolume, m_FadeDeltaTime, true, m_FadeExecutionDelay);
 	}
 }
 
 void UAudioPlayerEngine::FadeVolume()
 {
-	if (m_FadeTimeElapsed < m_FadeDuration || FMath::IsNearlyEqual(m_FadeTimeElapsed, m_FadeDuration, 0.05f))
+	if (m_FadeTimeElapsed < m_FadeDuration || FMath::IsNearlyEqual(m_FadeTimeElapsed, m_FadeDuration, m_ErrorTolerance))
 	{
 		float FadeDelta = m_FadeIn ? m_FadeTimeElapsed : (m_FadeDuration - m_FadeTimeElapsed);
 		float NewVolume = m_VolumeInSettings * (FadeDelta / m_FadeDuration);
