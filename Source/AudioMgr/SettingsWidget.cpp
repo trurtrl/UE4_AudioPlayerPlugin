@@ -60,7 +60,7 @@ bool USettingsWidget::Initialize()
 		m_SliderSound->SetValue(m_VolumeLevel);
 	}
 
-	m_AudioManager = NewObject<UAudioPlayer>(this, FName(TEXT("Audio Mgr")));
+	m_AudioManager = NewObject<UAudioPlayerEngine>(this, FName(TEXT("Audio Mgr")));
 
 	AudioVolumeChanged(m_VolumeLevel);
 
@@ -103,15 +103,15 @@ void USettingsWidget::ButtonRepeatClicked()
 
 void USettingsWidget::ButtonFadeInClicked()
 {
-	m_AudioManager->FadeIn(1.5f);
+	m_AudioManager->FadeIn(true, 1.5f);
 }
 
 void USettingsWidget::ButtonFadeOutClicked()
 {
-	m_AudioManager->FadeOut(1.5f);
+	m_AudioManager->FadeIn(false, 1.5f);
 }
 
-UAudioPlayer* USettingsWidget::GetAudioManager() const
+UAudioPlayerEngine* USettingsWidget::GetAudioManager() const
 {
 	return m_AudioManager;
 }
